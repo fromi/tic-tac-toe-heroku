@@ -1,1 +1,1 @@
-web: java -cp target/classes:target/dependency/* com.github.fromi.tictactoeheroku.Application
+web: java -Dserver.port=$PORT -war target/tic-tac-toe-heroku-1.0-SNAPSHOT.war
