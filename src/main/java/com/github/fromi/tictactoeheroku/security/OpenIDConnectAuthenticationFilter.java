@@ -12,25 +12,28 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
+import com.github.fromi.tictactoeheroku.google.UserInfo;
+
 public class OpenIDConnectAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
+    public static final String LOGIN_PATH = "/login";
+    private static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo";
 
     @Resource
     private OAuth2RestOperations restTemplate;
 
-    protected OpenIDConnectAuthenticationFilter(String defaultFilterProcessesUrl) {
-        super(defaultFilterProcessesUrl);
+    protected OpenIDConnectAuthenticationFilter() {
+        super(LOGIN_PATH);
         setAuthenticationManager(authentication -> authentication); // AbstractAuthenticationProcessingFilter requires an authentication manager.
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException, IOException, ServletException {
-        final ResponseEntity<UserInfo> userInfoResponseEntity = restTemplate.getForEntity("https://www.googleapis.com/oauth2/v2/userinfo", UserInfo.class);
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        ResponseEntity<UserInfo> userInfoResponseEntity = restTemplate.getForEntity(USER_INFO_URL, UserInfo.class);
         return new PreAuthenticatedAuthenticationToken(userInfoResponseEntity.getBody(), empty(), NO_AUTHORITIES);
     }
 }

@@ -1,5 +1,6 @@
-package com.github.fromi.tictactoeheroku.security;
+package com.github.fromi.tictactoeheroku;
 
+import static com.github.fromi.tictactoeheroku.security.OpenIDConnectAuthenticationFilter.LOGIN_PATH;
 import static com.jayway.restassured.RestAssured.given;
 
 import org.apache.http.HttpStatus;
@@ -12,7 +13,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.github.fromi.tictactoeheroku.Application;
 import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,7 +22,7 @@ import com.jayway.restassured.RestAssured;
 public class SecurityIT {
 
     @Value("${local.server.port}")
-    int port;
+    private int port;
 
     @Before
     public void setUp() {
@@ -35,7 +35,7 @@ public class SecurityIT {
     }
 
     @Test
-    public void createGameRedirectToOauthProvider() {
-        given().redirects().follow(false).when().post("/game").then().statusCode(HttpStatus.SC_MOVED_TEMPORARILY);
+    public void loginRedirectToOauthProvider() {
+        given().redirects().follow(false).when().get(LOGIN_PATH).then().statusCode(HttpStatus.SC_MOVED_TEMPORARILY);
     }
 }

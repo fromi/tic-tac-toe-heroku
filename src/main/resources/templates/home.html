@@ -5,6 +5,7 @@
 </head>
 <body>
 <h1>Play Tic-Tac-Toe online</h1>
-<a sec:authorize="!isAuthenticated()" th:href="${@environment.getProperty('google.oauth2.callback')}">Login</a>
+<a sec:authorize="!isAuthenticated()" th:href="${T(com.github.fromi.tictactoeheroku.security.OpenIDConnectAuthenticationFilter).LOGIN_PATH}">Login</a>
+<p sec:authorize="isAuthenticated()" th:text="${'Welcome ' + #authentication.principal.name}"></p>
 </body>
 </html>

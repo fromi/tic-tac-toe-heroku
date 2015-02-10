@@ -1,10 +1,8 @@
 package com.github.fromi.tictactoeheroku.security;
 
+import static com.github.fromi.tictactoeheroku.security.OpenIDConnectAuthenticationFilter.LOGIN_PATH;
 import static org.springframework.http.HttpMethod.GET;
 
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,24 +10,22 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    @Value("${google.oauth2.callback}")
-    private String loginURL;
+public class Configurer extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
-        return new LoginUrlAuthenticationEntryPoint(loginURL);
+        return new LoginUrlAuthenticationEntryPoint(LOGIN_PATH);
     }
 
     @Bean
-    public OpenIDConnectAuthenticationFilter openIdConnectAuthenticationFilter() {
-        return new OpenIDConnectAuthenticationFilter(loginURL);
+    public AbstractAuthenticationProcessingFilter authenticationFilter() {
+        return new OpenIDConnectAuthenticationFilter();
     }
 
     @Bean
@@ -40,10 +36,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterAfter(oAuth2ClientContextFilter(), AbstractPreAuthenticatedProcessingFilter.class)
-                .addFilterAfter(openIdConnectAuthenticationFilter(), OAuth2ClientContextFilter.class)
+                .addFilterAfter(authenticationFilter(), OAuth2ClientContextFilter.class)
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
                 .and().authorizeRequests()
-                .antMatchers(GET, "/").permitAll()
-                .antMatchers(GET, "/game").authenticated();
+                .antMatchers(GET, "/").permitAll();
     }
 }

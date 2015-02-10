@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 @EnableAutoConfiguration
 public class Application extends SpringBootServletInitializer {
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         SpringApplication.run(Application.class);
     }
 
