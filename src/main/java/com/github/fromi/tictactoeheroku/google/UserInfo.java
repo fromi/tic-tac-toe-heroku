@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserInfo {
-    public final String id;
+    @JsonProperty
     public final String name;
+
+    @JsonProperty
+    public final String id;
 
     @JsonCreator
     public UserInfo(@JsonProperty("id") String id, @JsonProperty("name") String name) {

@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <title>Tic Tac Toe</title>
+    <script src="libs/angularjs/angular.min.js"></script>
+    <script src="libs/angular-resource/angular-resource.min.js"></script>
 </head>
 <body ng-app="TicTacToe">
-    <h1>Welcome</h1>
-    <a ng-href="{{loginURL}}">Login</a>
-    <script src="libs/angularjs/angular.js"></script>
+    <h1>Welcome {{user.name}}</h1>
+    <a ng-show="user.$resolved && !user.id" ng-href="/login">Login</a>
     <script src="tic-tac-toe.js"></script>
 </body>
 </html>

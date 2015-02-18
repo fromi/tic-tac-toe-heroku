@@ -1,6 +1,7 @@
 {
   "name": "tic-tac-toe-heroku",
   "dependencies": {
-    "angularjs": "~1.3.13"
+    "angular": "~1.3.13",
+    "angular-resource": "~1.3.13"
   }
 }

@@ -1,3 +1,3 @@
-angular.module("TicTacToe", []).run(['$rootScope', function($rootScope) {
-    $rootScope.loginURL = "/login";
+angular.module('TicTacToe', ['ngResource']).run(['$rootScope', '$resource', function($rootScope, $resource) {
+    $rootScope.user = $resource('/user').get();
 }]);
