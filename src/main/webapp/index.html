@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>Tic Tac Toe</title>
-    <script src="libs/angular/angular.js"></script>
+    <script src="libs/angular/angular.min.js"></script>
     <script src="libs/angular-resource/angular-resource.min.js"></script>
+    <script src="libs/angular-route/angular-route.min.js"></script>
     <script src="libs/sockjs/sockjs.min.js"></script>
     <script src="libs/stomp-websocket/lib/stomp.min.js"></script>
 </head>
@@ -12,12 +13,7 @@
     <h1>Welcome {{user.name}}</h1>
     <a ng-show="user.$resolved && !user.id" ng-href="/login">Login</a>
 
-    <button ng-click="createGame()">Create Game</button>
-    <ul>
-        <li ng-repeat="game in games">
-            <a ng-href="#game/{{game.id}}">Game n°{{game.id}}</a>
-        </li>
-    </ul>
+    <div ng-view></div>
 
     <script src="tic-tac-toe.js"></script>
 </body>

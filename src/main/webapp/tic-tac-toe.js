@@ -1,8 +1,16 @@
-angular.module('TicTacToe', ['ngResource']).run(['$rootScope', '$resource', function ($rootScope, $resource) {
-    var socket = new SockJS("/test");
+angular.module('TicTacToe', ['ngResource', 'ngRoute']).config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/', {
+        templateUrl: 'games.html'
+    }).when('/games/:gameId', {
+        templateUrl: 'game.html'
+    }).otherwise({
+        redirectTo: '/'
+    });
+}]).run(['$rootScope', '$resource', function ($rootScope, $resource) {
+    var socket = new SockJS("/ws");
     var client = Stomp.over(socket);
-    client.connect({}, function() {
-        client.subscribe("/games", function(data) {
+    client.connect({}, function () {
+        client.subscribe("/games", function (data) {
             $rootScope.games.push({'id': data.body});
         });
     });
@@ -15,6 +23,4 @@ angular.module('TicTacToe', ['ngResource']).run(['$rootScope', '$resource', func
     $rootScope.createGame = function () {
         $resource('/game').save();
     };
-
-
 }]);
