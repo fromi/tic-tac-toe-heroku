@@ -1,7 +1,9 @@
 {
   "name": "tic-tac-toe-heroku",
   "dependencies": {
-    "angular": "~1.3.13",
-    "angular-resource": "~1.3.13"
+    "angular": "~1.4.0",
+    "angular-resource": "~1.4.0",
+    "sockjs": "~0.3.4",
+    "stomp-websocket": "~2.3.4"
   }
 }
