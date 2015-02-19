@@ -1,5 +1,7 @@
 package com.github.fromi.tictactoeheroku.game;
 
+import static com.github.fromi.tictactoeheroku.security.URLPathMapping.GAME;
+import static com.github.fromi.tictactoeheroku.security.WebSocketDestinationsMapping.GAMES;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import javax.annotation.Resource;
@@ -11,16 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GamesController {
 
-    public static final String GAME_PATH = "/game";
-    public static final String GAMES_PATH = "/games";
-
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @RequestMapping(method = POST, value = GAME_PATH)
+    @RequestMapping(method = POST, value = GAME)
     public Game createGame() {
         Game game = new Game();
-        simpMessagingTemplate.convertAndSend(GAMES_PATH, game.id);
+        simpMessagingTemplate.convertAndSend(GAMES, game.id);
         return game;
     }
 

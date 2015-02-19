@@ -6,21 +6,19 @@ import org.springframework.web.socket.config.annotation.AbstractWebSocketMessage
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
-import com.github.fromi.tictactoeheroku.game.GamesController;
-
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfigurer {
+public class WebSocketDestinationsMapping extends AbstractWebSocketMessageBrokerConfigurer {
 
-    public static final String WEB_SOCKET_PATH = "/ws";
+    public static final String GAMES = "/games";
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint(WEB_SOCKET_PATH).withSockJS();
+        registry.addEndpoint(URLPathMapping.WEB_SOCKET).withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker(GamesController.GAMES_PATH);
+        registry.enableSimpleBroker(GAMES);
     }
 }

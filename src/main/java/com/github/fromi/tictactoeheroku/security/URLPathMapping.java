@@ -1,8 +1,5 @@
 package com.github.fromi.tictactoeheroku.security;
 
-import static com.github.fromi.tictactoeheroku.game.GamesController.GAME_PATH;
-import static com.github.fromi.tictactoeheroku.security.WebSocketConfiguration.WEB_SOCKET_PATH;
-import static com.github.fromi.tictactoeheroku.security.AuthenticationController.USER_PATH;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -21,14 +18,19 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 @Configuration
 @EnableWebMvcSecurity
-public class PathConfiguration extends WebSecurityConfigurerAdapter {
+public class URLPathMapping extends WebSecurityConfigurerAdapter {
 
     private static final String HOME = "/";
+    public static final String USER = "/user";
+    public static final String GAME = "/game";
+    public static final String WEB_SOCKET = "/web-socket";
+
     private static final String JAVASCRIPT_FILES = "/**/*.js";
     private static final String JAVASCRIPT_MAP_FILES = "/**/*.js.map";
     private static final String HTML_FILES = "/**/*.html";
+    private static final String WEB_SOCKET_ALL_SUB_PATHS = WEB_SOCKET + "/**";
+
     private static final String XSRF_TOKEN_HEADER = "X-XSRF-TOKEN";
-    private static final String WEB_SOCKET_ALL_SUB_PATHS = WEB_SOCKET_PATH + "/**";
 
     @Bean
     public AbstractAuthenticationProcessingFilter authenticationFilter() {
@@ -49,7 +51,7 @@ public class PathConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HOME, JAVASCRIPT_FILES, JAVASCRIPT_MAP_FILES, HTML_FILES);
+        web.ignoring().antMatchers(JAVASCRIPT_FILES, JAVASCRIPT_MAP_FILES, HTML_FILES);
     }
 
     @Override
@@ -59,8 +61,8 @@ public class PathConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
                 .csrf().csrfTokenRepository(csrfTokenRepository())
                 .and().authorizeRequests()
-                .antMatchers(GET, USER_PATH, WEB_SOCKET_ALL_SUB_PATHS).permitAll()
-                .antMatchers(POST, GAME_PATH).authenticated()
+                .antMatchers(GET, HOME, USER, WEB_SOCKET_ALL_SUB_PATHS).permitAll()
+                .antMatchers(POST, GAME).authenticated()
                 .anyRequest().denyAll();
     }
 

@@ -11,9 +11,7 @@ import com.github.fromi.tictactoeheroku.google.UserInfo;
 @RestController
 public class AuthenticationController {
 
-    public static final String USER_PATH = "/user";
-
-    @RequestMapping(method = GET, value = USER_PATH)
+    @RequestMapping(method = GET, value = URLPathMapping.USER)
     public UserInfo getUserInfo(@AuthenticationPrincipal UserInfo userInfo) {
         return userInfo;
     }

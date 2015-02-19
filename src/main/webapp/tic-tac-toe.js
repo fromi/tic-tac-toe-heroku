@@ -7,7 +7,7 @@ angular.module('TicTacToe', ['ngResource', 'ngRoute']).config(['$routeProvider',
         redirectTo: '/'
     });
 }]).run(['$rootScope', '$resource', function ($rootScope, $resource) {
-    var socket = new SockJS("/ws");
+    var socket = new SockJS("/web-socket");
     var client = Stomp.over(socket);
     client.connect({}, function () {
         client.subscribe("/games", function (data) {
