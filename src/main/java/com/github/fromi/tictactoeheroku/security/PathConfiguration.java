@@ -1,5 +1,11 @@
 package com.github.fromi.tictactoeheroku.security;
 
+import static com.github.fromi.tictactoeheroku.game.GamesController.GAME_PATH;
+import static com.github.fromi.tictactoeheroku.security.WebSocketConfiguration.WEB_SOCKET_PATH;
+import static com.github.fromi.tictactoeheroku.security.AuthenticationController.USER_PATH;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,8 +19,6 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
-import static org.springframework.http.HttpMethod.*;
-
 @Configuration
 @EnableWebMvcSecurity
 public class PathConfiguration extends WebSecurityConfigurerAdapter {
@@ -24,6 +28,7 @@ public class PathConfiguration extends WebSecurityConfigurerAdapter {
     private static final String JAVASCRIPT_MAP_FILES = "/**/*.js.map";
     private static final String HTML_FILES = "/**/*.html";
     private static final String XSRF_TOKEN_HEADER = "X-XSRF-TOKEN";
+    private static final String WEB_SOCKET_ALL_SUB_PATHS = WEB_SOCKET_PATH + "/**";
 
     @Bean
     public AbstractAuthenticationProcessingFilter authenticationFilter() {
@@ -54,8 +59,8 @@ public class PathConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
                 .csrf().csrfTokenRepository(csrfTokenRepository())
                 .and().authorizeRequests()
-                .antMatchers(GET, "/user", "/ws/**").permitAll()
-                .antMatchers(POST, "/game").authenticated()
+                .antMatchers(GET, USER_PATH, WEB_SOCKET_ALL_SUB_PATHS).permitAll()
+                .antMatchers(POST, GAME_PATH).authenticated()
                 .anyRequest().denyAll();
     }
 

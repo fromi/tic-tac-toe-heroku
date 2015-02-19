@@ -1,9 +1,6 @@
-package com.github.fromi.tictactoeheroku;
+package com.github.fromi.tictactoeheroku.game;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
-
-import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -14,17 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GamesController {
 
+    public static final String GAME_PATH = "/game";
+    public static final String GAMES_PATH = "/games";
+
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @RequestMapping(method = POST, value = "/game")
+    @RequestMapping(method = POST, value = GAME_PATH)
     public Game createGame() {
         Game game = new Game();
-        simpMessagingTemplate.convertAndSend("/games", game.id);
+        simpMessagingTemplate.convertAndSend(GAMES_PATH, game.id);
         return game;
     }
 
-    private class Game {
-        public String id = UUID.randomUUID().toString();
-    }
 }

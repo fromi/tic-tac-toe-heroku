@@ -1,6 +1,5 @@
 package com.github.fromi.tictactoeheroku.security;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +20,7 @@ public class RequestMappingConfiguration {
     public static class RequestMappingHandlerMappingPostProcessor implements BeanPostProcessor {
 
         @Override
-        public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        public Object postProcessBeforeInitialization(Object bean, String beanName) {
             if (bean instanceof RequestMappingHandlerMapping) {
                 ((RequestMappingHandlerMapping) bean).setUseSuffixPatternMatch(false);
             }
@@ -29,7 +28,7 @@ public class RequestMappingConfiguration {
         }
 
         @Override
-        public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        public Object postProcessAfterInitialization(Object bean, String beanName) {
             return bean;
         }
     }
