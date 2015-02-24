@@ -11,14 +11,12 @@ angular.module('TicTacToe', ['ngResource', 'ngRoute']).config(['$routeProvider',
     var client = Stomp.over(socket);
     client.connect({}, function () {
         client.subscribe("/games", function (data) {
-            $rootScope.games.push({'id': data.body});
+            $rootScope.games.push(JSON.parse(data.body));
         });
     });
 
     $rootScope.user = $resource('/user').get();
-    $rootScope.games = [
-        {'id': 0}
-    ];
+    $rootScope.games = $resource('/games').query();
 
     $rootScope.createGame = function () {
         $resource('/game').save();

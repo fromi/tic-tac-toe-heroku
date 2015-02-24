@@ -1,10 +1,11 @@
 package com.github.fromi.tictactoeheroku.game;
 
-import java.util.UUID;
+import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Game {
     @JsonProperty
-    public final String id = UUID.randomUUID().toString();
+    @Id
+    public String id;
 }
