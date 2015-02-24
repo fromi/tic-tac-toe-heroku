@@ -10,13 +10,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.ResponseEntity;
+import com.github.fromi.tictactoeheroku.google.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-
-import com.github.fromi.tictactoeheroku.google.UserInfo;
 
 public class OpenIDConnectAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -33,7 +31,7 @@ public class OpenIDConnectAuthenticationFilter extends AbstractAuthenticationPro
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        ResponseEntity<UserInfo> userInfoResponseEntity = restTemplate.getForEntity(USER_INFO_URL, UserInfo.class);
-        return new PreAuthenticatedAuthenticationToken(userInfoResponseEntity.getBody(), empty(), NO_AUTHORITIES);
+        User user = restTemplate.getForEntity(USER_INFO_URL, User.class).getBody();
+        return new PreAuthenticatedAuthenticationToken(user, empty(), NO_AUTHORITIES);
     }
 }

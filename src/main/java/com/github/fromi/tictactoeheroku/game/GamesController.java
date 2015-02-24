@@ -8,7 +8,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.github.fromi.tictactoeheroku.google.User;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +28,8 @@ public class GamesController {
     private GameRepository repository;
 
     @RequestMapping(method = POST, value = GAME)
-    public Game createGame() {
-        Game game = repository.save(new Game());
+    public Game createGame(@AuthenticationPrincipal User user) {
+        Game game = repository.save(new Game(user));
         simpMessagingTemplate.convertAndSend(WebSocketDestinationsMapping.GAMES, game);
         return game;
     }

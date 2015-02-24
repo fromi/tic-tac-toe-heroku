@@ -3,7 +3,7 @@ package com.github.fromi.tictactoeheroku.google;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserInfo {
+public class User {
     @JsonProperty
     public final String name;
 
@@ -11,7 +11,7 @@ public class UserInfo {
     public final String id;
 
     @JsonCreator
-    public UserInfo(@JsonProperty("id") String id, @JsonProperty("name") String name) {
+    public User(@JsonProperty("id") String id, @JsonProperty("name") String name) {
         this.id = id;
         this.name = name;
     }
