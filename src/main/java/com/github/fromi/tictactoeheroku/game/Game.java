@@ -25,4 +25,8 @@ public class Game {
     public Game(User creator) {
         this(null, newHashSet(creator));
     }
+
+    public void join(User user) {
+        users.add(user);
+    }
 }

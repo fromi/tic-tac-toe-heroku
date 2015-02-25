@@ -1,12 +1,12 @@
 angular.module('TicTacToe', ['ngResource', 'ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/', {
         templateUrl: 'games.html'
-    }).when('/game/:gameId', {
+    }).when('/game/:id', {
         templateUrl: 'game.html'
     }).otherwise({
         redirectTo: '/'
     });
-}]).run(['$rootScope', '$resource', function ($rootScope, $resource) {
+}]).run(['$rootScope', '$resource', '$routeParams', function ($rootScope, $resource, $routeParams) {
     var socket = new SockJS("/web-socket");
     var client = Stomp.over(socket);
     client.connect({}, function () {
@@ -22,4 +22,8 @@ angular.module('TicTacToe', ['ngResource', 'ngRoute']).config(['$routeProvider',
     $rootScope.createGame = function () {
         $resource('/game').save();
     };
+
+    $rootScope.joinGame = function () {
+        client.send("/app/join", {}, $routeParams.id);
+    }
 }]);
