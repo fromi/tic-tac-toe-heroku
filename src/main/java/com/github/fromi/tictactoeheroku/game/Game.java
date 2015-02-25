@@ -11,17 +11,18 @@ import static com.google.common.collect.Sets.newHashSet;
 
 public class Game {
     @Id
-    public final String id = null;
+    public final String id;
 
     @JsonProperty
     private final Set<User> users;
 
     @PersistenceConstructor
-    private Game(Set<User> users) {
+    private Game(String id, Set<User> users) {
+        this.id = id;
         this.users = users;
     }
 
     public Game(User creator) {
-        users = newHashSet(creator);
+        this(null, newHashSet(creator));
     }
 }

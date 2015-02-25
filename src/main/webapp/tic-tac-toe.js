@@ -1,7 +1,7 @@
 angular.module('TicTacToe', ['ngResource', 'ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/', {
         templateUrl: 'games.html'
-    }).when('/games/:gameId', {
+    }).when('/game/:gameId', {
         templateUrl: 'game.html'
     }).otherwise({
         redirectTo: '/'
@@ -11,7 +11,8 @@ angular.module('TicTacToe', ['ngResource', 'ngRoute']).config(['$routeProvider',
     var client = Stomp.over(socket);
     client.connect({}, function () {
         client.subscribe("/games", function (data) {
-            $rootScope.games.push(JSON.parse(data.body));
+            var games = JSON.parse(data.body);
+            $rootScope.games.push(games);
         });
     });
 
