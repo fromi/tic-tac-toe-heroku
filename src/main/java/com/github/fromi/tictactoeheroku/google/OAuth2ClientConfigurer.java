@@ -29,13 +29,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class OAuth2ClientConfigurer {
     private static final String OPEN_ID_SCOPE = "openid";
 
-    @Value("${google.oauth2.discovery.document.url}")
+    @Value("${google.oauth2.discovery-document-url}")
     private String discoveryDocumentURL;
 
-    @Value("${google.oauth2.clientId}")
+    @Value("${google.oauth2.client-id}")
     private String clientId;
 
-    @Value("${google.oauth2.clientSecret}")
+    @Value("${google.oauth2.client-secret}")
     private String clientSecret;
 
     @Bean
