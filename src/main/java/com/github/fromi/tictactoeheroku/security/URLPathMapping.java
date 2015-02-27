@@ -52,7 +52,7 @@ public class URLPathMapping extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers(JAVASCRIPT_FILES, JAVASCRIPT_MAP_FILES, HTML_FILES);
     }
 
