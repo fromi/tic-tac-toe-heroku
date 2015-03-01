@@ -1,5 +1,6 @@
-<button ng-show="user.id && !joined(user, game)" ng-click="joinGame()">Join Game</button>
+<button ng-show="user.id && game.$resolved && !joined(user, game)" ng-click="joinGame()">Join Game</button>
+<button ng-show="user.id && game.$resolved && joined(user, game)" ng-click="ready()">I am ready!</button>
 <p>Game n°{{game.id}}</p>
 <ul>
-    <li ng-repeat="user in game.users">{{user.name}}</li>
+    <li ng-repeat="registeredPlayer in game.registeredPlayers">{{registeredPlayer.user.name}} - {{registeredPlayer.ready ? 'ready' : 'not ready'}}</li>
 </ul>

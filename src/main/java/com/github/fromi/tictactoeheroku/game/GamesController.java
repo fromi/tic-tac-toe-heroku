@@ -51,4 +51,11 @@ public class GamesController {
             repository.save(game);
         }
     }
+
+    @MessageMapping("/game/{id}/ready")
+    public void startGame(@DestinationVariable String id, @AuthenticationPrincipal User user) {
+        Game game = repository.findOne(id);
+        game.ready(user);
+        repository.save(game);
+    }
 }
