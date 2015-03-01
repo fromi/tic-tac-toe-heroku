@@ -2,8 +2,8 @@ package com.github.fromi.tictactoeheroku.game;
 
 import com.github.fromi.tictactoeheroku.google.User;
 import com.github.fromi.tictactoeheroku.security.WebSocketDestinationsMapping;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,10 +43,11 @@ public class GamesController {
         return repository.findOne(id);
     }
 
-    @MessageMapping("/join")
-    public void joinGame(@AuthenticationPrincipal User user, @Payload String gameId) {
-        Game game = repository.findOne(gameId);
+    @MessageMapping("/game/{id}/join")
+    public void joinGame(@DestinationVariable String id, @AuthenticationPrincipal User user) {
+        Game game = repository.findOne(id);
         game.join(user);
+        simpMessagingTemplate.convertAndSend(WebSocketDestinationsMapping.GAME + "/" + id + "/joined", user);
         repository.save(game);
     }
 }

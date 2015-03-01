@@ -1,29 +1,18 @@
 angular.module('TicTacToe', ['ngResource', 'ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/', {
-        templateUrl: 'games.html'
+        templateUrl: 'games.html',
+        controller: 'GamesController'
     }).when('/game/:id', {
-        templateUrl: 'game.html'
+        templateUrl: 'game.html',
+        controller: 'GameController'
     }).otherwise({
         redirectTo: '/'
     });
-}]).run(['$rootScope', '$resource', '$routeParams', function ($rootScope, $resource, $routeParams) {
-    var socket = new SockJS("/web-socket");
-    var client = Stomp.over(socket);
-    client.connect({}, function () {
-        client.subscribe("/games", function (data) {
-            var games = JSON.parse(data.body);
-            $rootScope.games.push(games);
-        });
-    });
-
+}]).run(['$rootScope', '$resource', function ($rootScope, $resource) {
+    /**
+     * @typedef {Object} User
+     * @property {string} id
+     * @property {string} name
+     */
     $rootScope.user = $resource('/user').get();
-    $rootScope.games = $resource('/games').query();
-
-    $rootScope.createGame = function () {
-        $resource('/game').save();
-    };
-
-    $rootScope.joinGame = function () {
-        client.send("/app/join", {}, $routeParams.id);
-    }
 }]);

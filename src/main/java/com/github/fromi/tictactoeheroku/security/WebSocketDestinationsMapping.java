@@ -14,6 +14,7 @@ import java.util.List;
 public class WebSocketDestinationsMapping extends AbstractWebSocketMessageBrokerConfigurer {
 
     public static final String GAMES = "/games";
+    public static final String GAME = "/game";
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -23,7 +24,8 @@ public class WebSocketDestinationsMapping extends AbstractWebSocketMessageBroker
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker(GAMES);
-        registry.setApplicationDestinationPrefixes("/app");
+        registry.enableSimpleBroker(GAME);
+        registry.setApplicationDestinationPrefixes("/");
     }
 
     @Override
