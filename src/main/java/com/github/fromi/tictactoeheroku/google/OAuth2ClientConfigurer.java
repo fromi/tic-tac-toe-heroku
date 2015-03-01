@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 @EnableOAuth2Client
 public class OAuth2ClientConfigurer {
-    private static final String OPEN_ID_SCOPE = "openid";
+    private static final String PROFILE_SCOPE = "profile";
 
     @Value("${google.oauth2.discovery-document-url}")
     private String discoveryDocumentURL;
@@ -45,7 +45,7 @@ public class OAuth2ClientConfigurer {
         googleOAuth2Details.setClientAuthenticationScheme(form);
         googleOAuth2Details.setClientId(clientId);
         googleOAuth2Details.setClientSecret(clientSecret);
-        googleOAuth2Details.setScope(singletonList(OPEN_ID_SCOPE));
+        googleOAuth2Details.setScope(singletonList(PROFILE_SCOPE));
         return googleOAuth2Details;
     }
 

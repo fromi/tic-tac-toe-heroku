@@ -26,7 +26,7 @@ public class Game {
         this(null, newHashSet(creator));
     }
 
-    public void join(User user) {
-        users.add(user);
+    public boolean join(User user) {
+        return users.add(user);
     }
 }

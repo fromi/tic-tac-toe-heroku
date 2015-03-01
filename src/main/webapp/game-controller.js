@@ -11,6 +11,15 @@ angular.module('TicTacToe').controller('GameController', ['$scope', '$resource',
         $scope.game.users.push(user);
     });
 
+    $scope.joined = function(user, game) {
+        for (var i = 0; i < game.users.length; i++) {
+            if (game.users[i].id == user.id) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     $scope.joinGame = function () {
         StompService.send('/game/' + $routeParams.id + '/join');
     }

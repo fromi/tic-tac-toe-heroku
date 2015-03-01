@@ -46,8 +46,9 @@ public class GamesController {
     @MessageMapping("/game/{id}/join")
     public void joinGame(@DestinationVariable String id, @AuthenticationPrincipal User user) {
         Game game = repository.findOne(id);
-        game.join(user);
-        simpMessagingTemplate.convertAndSend(WebSocketDestinationsMapping.GAME + "/" + id + "/joined", user);
-        repository.save(game);
+        if (game.join(user)) {
+            simpMessagingTemplate.convertAndSend(WebSocketDestinationsMapping.GAME + "/" + id + "/joined", user);
+            repository.save(game);
+        }
     }
 }
