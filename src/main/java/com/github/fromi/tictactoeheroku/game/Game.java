@@ -13,6 +13,7 @@ public class Game {
     private static final int NUMBER_OF_PLAYERS = 2;
 
     @Id
+    @JsonProperty
     private final String id;
 
     @JsonProperty

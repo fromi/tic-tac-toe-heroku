@@ -32,4 +32,12 @@ angular.module('TicTacToe').controller('GameController', ['$scope', '$resource',
     $scope.ready = function () {
         StompService.send('/game/' + $routeParams.id + "/ready");
     };
+
+    StompService.subscribe($scope, '/game/' + $routeParams.id + '/ready', function (user) {
+        for (var i = 0; i < $scope.game.registeredPlayers.length; i++) {
+            if ($scope.game.registeredPlayers[i].user.id == user.id) {
+                $scope.game.registeredPlayers[i].ready = true;
+            }
+        }
+    });
 }]);

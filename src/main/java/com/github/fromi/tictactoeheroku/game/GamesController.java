@@ -25,6 +25,7 @@ import com.github.fromi.tictactoeheroku.security.websocket.WebSocketDestinations
 public class GamesController {
 
     private static final String GAME_JOINED_EVENT = "joined";
+    private static final String PLAYER_READY_EVENT = "ready";
 
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -65,6 +66,7 @@ public class GamesController {
         if (!player.isReady()) {
             player.setReady();
             repository.save(game);
+            simpMessagingTemplate.convertAndSend(SLASH_JOINER.join(WebSocketDestinationsMapping.GAME, id, PLAYER_READY_EVENT), user);
         }
     }
 }
