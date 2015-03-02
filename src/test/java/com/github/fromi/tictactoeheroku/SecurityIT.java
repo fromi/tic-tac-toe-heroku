@@ -1,6 +1,6 @@
 package com.github.fromi.tictactoeheroku;
 
-import static com.github.fromi.tictactoeheroku.security.OpenIDConnectAuthenticationFilter.LOGIN_PATH;
+import static com.github.fromi.tictactoeheroku.security.google.OpenIDConnectAuthenticationFilter.LOGIN_PATH;
 import static com.jayway.restassured.RestAssured.given;
 
 import org.apache.http.HttpStatus;

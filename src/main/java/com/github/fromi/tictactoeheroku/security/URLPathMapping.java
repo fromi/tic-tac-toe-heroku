@@ -16,6 +16,8 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
+import com.github.fromi.tictactoeheroku.security.google.OpenIDConnectAuthenticationFilter;
+
 @Configuration
 @EnableWebMvcSecurity
 public class URLPathMapping extends WebSecurityConfigurerAdapter {

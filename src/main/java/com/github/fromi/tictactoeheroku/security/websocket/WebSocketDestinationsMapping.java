@@ -1,4 +1,4 @@
-package com.github.fromi.tictactoeheroku.security;
+package com.github.fromi.tictactoeheroku.security.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver;
@@ -9,12 +9,16 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
 import java.util.List;
 
+import com.github.fromi.tictactoeheroku.security.URLPathMapping;
+import com.google.common.base.Joiner;
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketDestinationsMapping extends AbstractWebSocketMessageBrokerConfigurer {
 
     public static final String GAMES = "/games";
     public static final String GAME = "/game";
+    public static final Joiner SLASH_JOINER = Joiner.on('/');
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {

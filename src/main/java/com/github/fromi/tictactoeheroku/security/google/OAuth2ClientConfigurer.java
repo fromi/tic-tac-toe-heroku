@@ -1,4 +1,4 @@
-package com.github.fromi.tictactoeheroku.google;
+package com.github.fromi.tictactoeheroku.security.google;
 
 import static java.util.Collections.singletonList;
 import static org.springframework.security.oauth2.common.AuthenticationScheme.form;
@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @EnableOAuth2Client
 public class OAuth2ClientConfigurer {
     private static final String PROFILE_SCOPE = "profile";
+    static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo";
 
     @Value("${google.oauth2.discovery-document-url}")
     private String discoveryDocumentURL;
@@ -56,7 +57,6 @@ public class OAuth2ClientConfigurer {
         return restTemplate.getForEntity(discoveryDocumentURL, AuthorizationCodeResourceDetails.class).getBody();
     }
 
-    @SuppressWarnings("SpringJavaAutowiringInspection") // Provided by OAuth2ClientConfiguration
     @Resource
     private OAuth2ClientContext oAuth2ClientContext;
 

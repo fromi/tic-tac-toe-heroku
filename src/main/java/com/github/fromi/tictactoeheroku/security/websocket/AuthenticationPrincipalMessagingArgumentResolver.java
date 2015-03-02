@@ -1,4 +1,4 @@
-package com.github.fromi.tictactoeheroku.security;
+package com.github.fromi.tictactoeheroku.security.websocket;
 
 import java.security.Principal;
 

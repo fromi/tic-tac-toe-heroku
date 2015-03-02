@@ -1,17 +1,19 @@
 package com.github.fromi.tictactoeheroku.game;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.fromi.tictactoeheroku.google.User;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.fromi.tictactoeheroku.security.google.User;
+
 public class Game {
-    public static final int NUMBER_OF_PLAYERS = 2;
+    private static final int NUMBER_OF_PLAYERS = 2;
+
     @Id
-    public final String id;
+    private final String id;
 
     @JsonProperty
     private final Set<RegisteredPlayer> registeredPlayers;
@@ -23,37 +25,18 @@ public class Game {
     }
 
     public Game(User creator) {
-        this(null, new HashSet<>());
+        this(null, new HashSet<>(NUMBER_OF_PLAYERS));
         join(creator);
     }
 
     public boolean join(User user) {
         if (registeredPlayers.size() >= NUMBER_OF_PLAYERS) {
-            throw new IllegalStateException();
+            throw new GameFullException();
         }
         return registeredPlayers.add(new RegisteredPlayer(user));
     }
 
-    public void ready(User user) {
-        if (registeredPlayers.size() == NUMBER_OF_PLAYERS) {
-            getRegisteredPlayer(user).ready = true;
-        }
-    }
-
-    private RegisteredPlayer getRegisteredPlayer(User user) {
-        return registeredPlayers.stream().filter(player -> player.user.equals(user)).findFirst().orElseThrow(IllegalArgumentException::new);
-    }
-
-    public class RegisteredPlayer {
-
-        @JsonProperty
-        private final User user;
-
-        @JsonProperty
-        private boolean ready;
-
-        public RegisteredPlayer(User user) {
-            this.user = user;
-        }
+    public RegisteredPlayer getPlayerControlledBy(User user) {
+        return registeredPlayers.stream().filter(player -> player.isControlledBy(user)).findFirst().orElseThrow(IllegalArgumentException::new);
     }
 }
