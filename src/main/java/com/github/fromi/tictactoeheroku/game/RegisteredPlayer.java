@@ -3,7 +3,7 @@ package com.github.fromi.tictactoeheroku.game;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.fromi.tictactoeheroku.security.google.User;
 
-public class RegisteredPlayer {
+public class RegisteredPlayer implements Player {
 
     @JsonProperty
     private final User user;
@@ -19,10 +19,12 @@ public class RegisteredPlayer {
         return this.user.equals(user);
     }
 
+    @Override
     public boolean isReady() {
         return ready;
     }
 
+    @Override
     public void setReady() {
         ready = true;
     }

@@ -62,7 +62,7 @@ public class GamesController {
     @MessageMapping("/game/{id}/ready")
     public void playerReady(@DestinationVariable String id, @AuthenticationPrincipal User user) {
         Game game = repository.findOne(id);
-        RegisteredPlayer player = game.getPlayerControlledBy(user);
+        Player player = game.getPlayerControlledBy(user);
         if (!player.isReady()) {
             player.setReady();
             repository.save(game);
