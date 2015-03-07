@@ -1,18 +1,14 @@
 angular.module('TicTacToe').controller('GameController', ['$scope', '$resource', '$routeParams', 'StompService', function($scope, $resource, $routeParams, StompService) {
 
     /**
-     * @typedef {Object} GameSetup
-     * @property {Array<RegisteredPlayer>} players
-     */
-    /**
-     * @typedef {Object} RegisteredPlayer
-     * @property {User} user
-     * @property {boolean} ready
+     * @typedef {Object} PlayingUser
+     * @property {String} name
+     * @property {String} status
      */
     /**
      * @typedef {Object} Game
-     * @property {string} id
-     * @property {GameSetup} state
+     * @property {String} id
+     * @property {Object<string, PlayingUser>} playingUsers
      */
     $scope.game = $resource('/game/' + $routeParams.id).get();
 
@@ -20,28 +16,26 @@ angular.module('TicTacToe').controller('GameController', ['$scope', '$resource',
         StompService.send('/game/' + $routeParams.id + '/join');
     };
 
-    StompService.subscribe($scope, '/game/' + $routeParams.id + '/joined', function (user) {
-        $scope.game.state.players.push({user:user, ready:false});
+    StompService.subscribe($scope, '/game/' + $routeParams.id + '/player-joined', function (user) {
+        $scope.game.playingUsers[user.id] = {name:user.name, status:"REGISTERED"};
     });
 
     $scope.joined = function(user, game) {
-        for (var i = 0; i < game.state.players.length; i++) {
-            if (game.state.players[i].user.id == user.id) {
-                return true;
-            }
-        }
-        return false;
+        return game.playingUsers.hasOwnProperty(user.id);
     };
 
     $scope.ready = function () {
         StompService.send('/game/' + $routeParams.id + "/ready");
     };
 
-    StompService.subscribe($scope, '/game/' + $routeParams.id + '/ready', function (user) {
-        for (var i = 0; i < $scope.game.state.players.length; i++) {
-            if ($scope.game.state.players[i].user.id == user.id) {
-                $scope.game.state.players[i].ready = true;
-            }
-        }
-    });
+    StompService.subscribe($scope, '/game/' + $routeParams.id + '/player-status-changed', playerStatusChangedHandler);
+
+    /**
+     * @typedef {Object} PlayerStatusChanged
+     * @property {String} playerId
+     * @property {String} status
+     */
+    function playerStatusChangedHandler(playerStatusChanged) {
+        $scope.game.playingUsers[playerStatusChanged.playerId].status = playerStatusChanged.status;
+    }
 }]);
