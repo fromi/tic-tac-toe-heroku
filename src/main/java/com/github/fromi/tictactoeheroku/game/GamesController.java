@@ -36,7 +36,7 @@ public class GamesController {
 
     @RequestMapping(method = GET, value = GAME + "/{id}")
     public OnlineGame getGame(@PathVariable String id) {
-        return service.getGame(id);
+        return service.playGame(id);
     }
 
     @MessageMapping("/game/{id}/join")

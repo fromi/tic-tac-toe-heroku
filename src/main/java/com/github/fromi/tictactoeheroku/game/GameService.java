@@ -34,13 +34,10 @@ public class GameService {
         return repository.findAll();
     }
 
-    public OnlineGame getGame(String id) {
-        return repository.findOne(id);
-    }
-
     @Cacheable("games")
     public OnlineGame playGame(String id) {
         OnlineGame game = repository.findOne(id);
+        game.observe((Consumer<GameStarted>) gameStarted -> repository.save(game));
         game.observe((Consumer<Object>) event -> dispatch(id, event));
         return game;
     }

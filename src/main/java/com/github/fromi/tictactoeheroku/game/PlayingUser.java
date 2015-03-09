@@ -1,11 +1,12 @@
 package com.github.fromi.tictactoeheroku.game;
 
+import static com.github.fromi.tictactoeheroku.game.PlayingUser.Status.READY;
+import static com.github.fromi.tictactoeheroku.game.PlayingUser.Status.REGISTERED;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.github.fromi.boardgametools.event.Dispatcher;
 import com.github.fromi.tictactoeheroku.security.google.User;
-
-import static com.github.fromi.tictactoeheroku.game.PlayingUser.Status.*;
 
 public class PlayingUser extends Dispatcher {
 
@@ -27,6 +28,14 @@ public class PlayingUser extends Dispatcher {
             status = READY;
             dispatch(new PlayerStatusChanged(user.id, status));
         }
+    }
+
+    public boolean ready() {
+        return status == READY;
+    }
+
+    void playsAs(Object playerId) {
+        playsAs = playerId;
     }
 
     public enum Status {

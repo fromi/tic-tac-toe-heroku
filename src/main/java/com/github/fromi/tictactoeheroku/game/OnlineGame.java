@@ -1,16 +1,22 @@
 package com.github.fromi.tictactoeheroku.game;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.github.fromi.boardgametools.event.Dispatcher;
-import com.github.fromi.tictactoe.TicTacToe;
-import com.github.fromi.tictactoeheroku.security.google.User;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.github.fromi.boardgametools.event.Dispatcher;
+import com.github.fromi.tictactoe.TicTacToe;
+import com.github.fromi.tictactoe.material.Mark;
+import com.github.fromi.tictactoeheroku.security.google.User;
 
 @Document(collection = "game")
 public class OnlineGame extends Dispatcher {
@@ -26,17 +32,17 @@ public class OnlineGame extends Dispatcher {
     @JsonUnwrapped
     private TicTacToe game;
 
+    public OnlineGame(User creator) {
+        playingUsers = new HashMap<>();
+        join(creator);
+    }
+
     @PersistenceConstructor
     private OnlineGame(String id, Map<String, PlayingUser> playingUsers, TicTacToe game) {
         this.id = id;
         this.playingUsers = playingUsers;
         this.game = game;
-        propagate(playingUsers.values());
-    }
-
-    public OnlineGame(User creator) {
-        playingUsers = new HashMap<>();
-        join(creator);
+        playingUsers.values().forEach(this::observe);
     }
 
     public void join(User user) {
@@ -45,8 +51,28 @@ public class OnlineGame extends Dispatcher {
         }
         PlayingUser playingUser = new PlayingUser(user);
         playingUsers.put(user.id, playingUser);
-        propagate(playingUser);
+        observe(playingUser);
         dispatch(new PlayerJoined(user));
+    }
+
+    private void observe(PlayingUser playingUser) {
+        propagate(playingUser);
+        playingUser.observe((Consumer<PlayerStatusChanged>) playerStatusChanged -> playerStatusChangedHandler());
+    }
+
+    private void playerStatusChangedHandler() {
+        if (playingUsers.values().stream().allMatch(PlayingUser::ready)) {
+            start();
+        }
+    }
+
+    private void start() {
+        game = new TicTacToe();
+        List<PlayingUser> users = new ArrayList<>(playingUsers.values());
+        Collections.shuffle(users);
+        users.get(0).playsAs(Mark.X);
+        users.get(1).playsAs(Mark.O);
+        dispatch(new GameStarted(this));
     }
 
     public PlayingUser getPlayerControlledBy(User user) {
