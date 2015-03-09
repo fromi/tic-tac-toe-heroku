@@ -11,13 +11,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import com.github.fromi.boardgametools.event.Event;
 import com.github.fromi.tictactoeheroku.security.google.User;
 import com.github.fromi.tictactoeheroku.security.websocket.WebSocketDestinationsMapping;
 
 @Service
 public class GameService {
-    private static final String PLAYER_JOINED = "player-joined";
-    private static final String PLAYER_STATUS_CHANGED = "player-status-changed";
 
     @Resource
     private GameRepository repository;
@@ -42,14 +41,13 @@ public class GameService {
     @Cacheable("games")
     public OnlineGame playGame(String id) {
         OnlineGame game = repository.findOne(id);
-        game.observe((Consumer<PlayerJoined>) playerJoined -> {
-            repository.save(game);
-            simpMessagingTemplate.convertAndSend(SLASH_JOINER.join(WebSocketDestinationsMapping.GAME, id, PLAYER_JOINED), playerJoined);
-        });
-        game.observe((Consumer<PlayerStatusChanged>) playerStatusChanged -> {
-            repository.save(game);
-            simpMessagingTemplate.convertAndSend(SLASH_JOINER.join(WebSocketDestinationsMapping.GAME, id, PLAYER_STATUS_CHANGED), playerStatusChanged);
-        });
+        game.observe((Consumer<Object>) event -> dispatch(id, event));
         return game;
+    }
+
+    private void dispatch(String gameId, Object event) {
+        Event eventAnnotation = event.getClass().getAnnotation(Event.class);
+        String eventName = eventAnnotation != null ? eventAnnotation.value() : event.getClass().getSimpleName();
+        simpMessagingTemplate.convertAndSend(SLASH_JOINER.join(WebSocketDestinationsMapping.GAME, gameId, eventName), event);
     }
 }

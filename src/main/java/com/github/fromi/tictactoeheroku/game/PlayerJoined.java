@@ -1,8 +1,10 @@
 package com.github.fromi.tictactoeheroku.game;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.github.fromi.boardgametools.event.Event;
 import com.github.fromi.tictactoeheroku.security.google.User;
 
+@Event("player-joined")
 public class PlayerJoined {
 
     @JsonUnwrapped
