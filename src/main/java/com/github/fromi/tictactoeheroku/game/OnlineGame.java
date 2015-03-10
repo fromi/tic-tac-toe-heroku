@@ -1,5 +1,8 @@
 package com.github.fromi.tictactoeheroku.game;
 
+import static com.github.fromi.tictactoeheroku.game.OnlineGame.State.PLAY;
+import static com.github.fromi.tictactoeheroku.game.OnlineGame.State.SETUP;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,6 +31,9 @@ public class OnlineGame extends Dispatcher {
 
     @JsonProperty
     private final Map<String, PlayingUser> playingUsers;
+
+    @JsonProperty
+    private State state = SETUP;
 
     @JsonUnwrapped
     private TicTacToe game;
@@ -72,6 +78,7 @@ public class OnlineGame extends Dispatcher {
         Collections.shuffle(users);
         users.get(0).playsAs(Mark.X);
         users.get(1).playsAs(Mark.O);
+        state = PLAY;
         dispatch(new GameStarted(this));
     }
 
@@ -80,5 +87,9 @@ public class OnlineGame extends Dispatcher {
             throw new PlayerNotFoundException();
         }
         return playingUsers.get(user.id);
+    }
+
+    public enum State {
+        SETUP, PLAY, OVER
     }
 }

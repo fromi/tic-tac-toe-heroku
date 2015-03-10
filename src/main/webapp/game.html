@@ -1,6 +1,9 @@
-<button ng-show="user.id && game.$resolved && !joined(user, game)" ng-click="joinGame()">Join Game</button>
-<button ng-show="user.id && game.$resolved && joined(user, game)" ng-click="ready()">I am ready!</button>
 <p>Game n°{{game.id}}</p>
-<ul>
-    <li ng-repeat="(id, playingUser) in game.playingUsers">{{playingUser.name}} - {{playingUser.status}}</li>
-</ul>
+<div ng-switch="game.state">
+    <div ng-switch-when="SETUP">
+        <div ng-include="'game-setup.html'" ng-controller="GameSetupController"></div>
+    </div>
+    <div ng-switch-when="PLAY">
+        <p>Game being played</p>
+    </div>
+</div>
