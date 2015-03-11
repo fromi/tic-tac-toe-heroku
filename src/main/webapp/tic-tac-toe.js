@@ -1,4 +1,7 @@
 angular.module('TicTacToe', ['ngResource', 'ngRoute'])
+    .config(function($resourceProvider) {
+        $resourceProvider.defaults.stripTrailingSlashes = false;
+    })
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/', {
             templateUrl: 'games.html',

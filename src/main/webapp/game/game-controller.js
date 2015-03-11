@@ -1,7 +1,7 @@
 angular.module('TicTacToe').controller('GameController', [
     '$scope', '$resource', '$routeParams', 'StompService',
     function ($scope, $resource, $routeParams, StompService) {
-        var gameResource = $resource('/game/' + $routeParams.id);
+        var gameResource = $resource('/games/' + $routeParams.id);
 
         /**
          * @typedef {Object} PlayingUser

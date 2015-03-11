@@ -1,6 +1,5 @@
 package com.github.fromi.tictactoeheroku.game;
 
-import static com.github.fromi.tictactoeheroku.security.URLPathMapping.GAME;
 import static com.github.fromi.tictactoeheroku.security.URLPathMapping.GAMES;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -26,7 +25,7 @@ public class GamesController {
     @Resource
     private GameService service;
 
-    @RequestMapping(method = POST, value = GAME)
+    @RequestMapping(method = POST, value = GAMES)
     public OnlineGame createGame(@AuthenticationPrincipal User user) {
         return service.createGame(user);
     }
@@ -36,7 +35,7 @@ public class GamesController {
         return service.getGames();
     }
 
-    @RequestMapping(method = GET, value = GAME + "/{id:[A-Za-z0-9]*}")
+    @RequestMapping(method = GET, value = GAMES + "/{id:[A-Za-z0-9]*}")
     public OnlineGame getGame(@PathVariable String id) {
         return service.playGame(id);
     }
