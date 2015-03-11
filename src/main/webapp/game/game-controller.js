@@ -4,16 +4,17 @@ angular.module('TicTacToe').controller('GameController', [
         var gameResource = $resource('/games/' + $routeParams.id);
 
         /**
-         * @typedef {Object} PlayingUser
+         * @typedef {Object} Player
          * @property {String} name
          * @property {String} status
+         * @property {Boolean} playing
          */
         /**
          * @typedef {Object} Game
          * @property {String} id
          * @property {String} state
          * @property {Array<Array<String>>} grid
-         * @property {Object<string, PlayingUser>} playingUsers
+         * @property {Object<string, Player>} players
          */
         $scope.game = gameResource.get();
 

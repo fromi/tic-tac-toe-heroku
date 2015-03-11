@@ -8,12 +8,12 @@ angular.module('TicTacToe').controller('GameSetupController', [
         StompService.subscribe($scope, '/game/' + $routeParams.id + '/player-joined',
             /** @param {User} user */
             function (user) {
-                $scope.game.playingUsers[user.id] = {name: user.name, status: "REGISTERED"};
+                $scope.game.players[user.id] = {name: user.name, status: "REGISTERED"};
             }
         );
 
         $scope.joined = function (user, game) {
-            return game.playingUsers.hasOwnProperty(user.id);
+            return game.players.hasOwnProperty(user.id);
         };
 
         $scope.ready = function () {
@@ -28,7 +28,7 @@ angular.module('TicTacToe').controller('GameSetupController', [
         StompService.subscribe($scope, '/game/' + $routeParams.id + '/player-status-changed',
             /** @param {PlayerStatusChanged} playerStatusChanged */
             function (playerStatusChanged) {
-                $scope.game.playingUsers[playerStatusChanged.playerId].status = playerStatusChanged.status;
+                $scope.game.players[playerStatusChanged.playerId].status = playerStatusChanged.status;
             }
         );
     }
