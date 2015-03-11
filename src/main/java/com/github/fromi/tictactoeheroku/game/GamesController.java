@@ -11,11 +11,13 @@ import javax.annotation.Resource;
 
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.fromi.tictactoe.material.Cell;
 import com.github.fromi.tictactoeheroku.security.google.User;
 
 @RestController
@@ -46,6 +48,11 @@ public class GamesController {
 
     @MessageMapping("/game/{id}/ready")
     public void playerReady(@DestinationVariable String id, @AuthenticationPrincipal User user) {
-        service.playGame(id).getPlayerControlledBy(user).setReady();
+        service.playGame(id).getPlayingUser(user).setReady();
+    }
+
+    @MessageMapping("/game/{id}/mark")
+    public void mark(@DestinationVariable String id, @AuthenticationPrincipal User user, @Payload Cell cell) {
+        service.playGame(id).getPlayerControlledBy(user).mark(cell.row, cell.column);
     }
 }

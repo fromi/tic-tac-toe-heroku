@@ -28,9 +28,10 @@ public class URLPathMapping extends WebSecurityConfigurerAdapter {
     public static final String GAMES = "/games";
     public static final String WEB_SOCKET = "/web-socket";
 
-    private static final String JAVASCRIPT_FILES = "/**/*.js";
-    private static final String JAVASCRIPT_MAP_FILES = "/**/*.js.map";
     private static final String HTML_FILES = "/**/*.html";
+    private static final String JAVASCRIPT_FILES = "/**/*.js";
+    private static final String CSS_FILES = "/**/*.css";
+    private static final String MAP_FILES = "/**/*.map";
     private static final String WEB_SOCKET_ALL_SUB_PATHS = WEB_SOCKET + "/**";
     private static final String GAME_SUB_PATHS = GAME + "/*";
 
@@ -55,7 +56,7 @@ public class URLPathMapping extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers(JAVASCRIPT_FILES, JAVASCRIPT_MAP_FILES, HTML_FILES);
+        web.ignoring().antMatchers(HTML_FILES, JAVASCRIPT_FILES, CSS_FILES, MAP_FILES);
     }
 
     @Override

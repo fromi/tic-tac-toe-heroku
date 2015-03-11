@@ -1,0 +1,18 @@
+table.grid tbody > :nth-child(2) {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+table.grid td {
+    font-size: 1000%;
+    width: 1.2em;
+    height: 1.2em;
+    text-align: center;
+    line-height: 1.2em;
+}
+
+table.grid tr > :nth-child(2) {
+    box-sizing: border-box;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}

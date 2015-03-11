@@ -5,6 +5,7 @@
     "angular-resource": "~1.4.0",
     "angular-route": "~1.4.0",
     "sockjs": "~0.3.4",
-    "stomp-websocket": "~2.3.4"
+    "stomp-websocket": "~2.3.4",
+    "bootstrap": "~3.3.2"
   }
 }

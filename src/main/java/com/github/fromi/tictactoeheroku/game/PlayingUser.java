@@ -6,6 +6,7 @@ import static com.github.fromi.tictactoeheroku.game.PlayingUser.Status.REGISTERE
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.github.fromi.boardgametools.event.Dispatcher;
+import com.github.fromi.tictactoe.material.Mark;
 import com.github.fromi.tictactoeheroku.security.google.User;
 
 public class PlayingUser extends Dispatcher {
@@ -17,7 +18,7 @@ public class PlayingUser extends Dispatcher {
     @JsonProperty
     private Status status = REGISTERED;
 
-    private Object playsAs;
+    Mark playsAs;
 
     public PlayingUser(User user) {
         this.user = user;
@@ -34,7 +35,7 @@ public class PlayingUser extends Dispatcher {
         return status == READY;
     }
 
-    void playsAs(Object playerId) {
+    void playsAs(Mark playerId) {
         playsAs = playerId;
     }
 

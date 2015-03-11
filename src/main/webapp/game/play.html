@@ -1,0 +1,7 @@
+<table class="grid">
+    <tbody>
+        <tr ng-repeat="(row, rowMarks) in game.grid">
+            <td ng-repeat="(column, markSymbol) in rowMarks track by $index" ng-click="mark(row, column)">{{markSymbol}}</td>
+        </tr>
+    </tbody>
+</table>

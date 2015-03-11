@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.github.fromi.boardgametools.event.Dispatcher;
+import com.github.fromi.tictactoe.Player;
 import com.github.fromi.tictactoe.TicTacToe;
 import com.github.fromi.tictactoe.material.Mark;
 import com.github.fromi.tictactoeheroku.security.google.User;
@@ -30,12 +31,13 @@ public class OnlineGame extends Dispatcher {
     private String id;
 
     @JsonProperty
-    private final Map<String, PlayingUser> playingUsers;
-
-    @JsonProperty
     private State state = SETUP;
 
+    @JsonProperty
+    private final Map<String, PlayingUser> playingUsers;
+
     @JsonUnwrapped
+    @JsonProperty
     private TicTacToe game;
 
     public OnlineGame(User creator) {
@@ -49,6 +51,7 @@ public class OnlineGame extends Dispatcher {
         this.playingUsers = playingUsers;
         this.game = game;
         playingUsers.values().forEach(this::observe);
+        propagate(game);
     }
 
     public void join(User user) {
@@ -79,14 +82,19 @@ public class OnlineGame extends Dispatcher {
         users.get(0).playsAs(Mark.X);
         users.get(1).playsAs(Mark.O);
         state = PLAY;
+        propagate(game);
         dispatch(new GameStarted(this));
     }
 
-    public PlayingUser getPlayerControlledBy(User user) {
+    public PlayingUser getPlayingUser(User user) {
         if (!playingUsers.containsKey(user.id)) {
             throw new PlayerNotFoundException();
         }
         return playingUsers.get(user.id);
+    }
+
+    public Player getPlayerControlledBy(User user) {
+        return game.player(getPlayingUser(user).playsAs);
     }
 
     public enum State {
