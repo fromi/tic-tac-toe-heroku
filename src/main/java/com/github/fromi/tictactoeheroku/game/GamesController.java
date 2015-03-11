@@ -34,7 +34,7 @@ public class GamesController {
         return service.getGames();
     }
 
-    @RequestMapping(method = GET, value = GAME + "/{id}")
+    @RequestMapping(method = GET, value = GAME + "/{id:[A-Za-z0-9]*}")
     public OnlineGame getGame(@PathVariable String id) {
         return service.playGame(id);
     }

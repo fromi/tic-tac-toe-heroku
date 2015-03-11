@@ -1,7 +1,7 @@
 <p>Game n°{{game.id}}</p>
 <div ng-switch="game.state">
     <div ng-switch-when="SETUP">
-        <div ng-include="'game-setup.html'" ng-controller="GameSetupController"></div>
+        <div ng-include="'/game/setup.html'" ng-controller="GameSetupController"></div>
     </div>
     <div ng-switch-when="PLAY">
         <p>Game being played</p>
