@@ -108,7 +108,7 @@
 
     <profiles>
         <profile>
-            <id>bower-install</id>
+            <id>bower</id>
             <build>
                 <plugins>
                     <plugin>
