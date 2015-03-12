@@ -6,9 +6,9 @@ angular.module('TicTacToe').controller('GameSetupController', [
         };
 
         StompService.subscribe($scope, '/game/' + $routeParams.id + '/player-joined',
-            /** @param {User} user */
-            function (user) {
-                $scope.game.players[user.id] = {name: user.name, status: "REGISTERED"};
+            /** @param {Player} player */
+            function (player) {
+                $scope.game.players[player.user.id] = player;
             }
         );
 
@@ -20,15 +20,10 @@ angular.module('TicTacToe').controller('GameSetupController', [
             StompService.send('/game/' + $routeParams.id + "/ready");
         };
 
-        /**
-         * @typedef {Object} PlayerStatusChanged
-         * @property {String} playerId
-         * @property {String} status
-         */
-        StompService.subscribe($scope, '/game/' + $routeParams.id + '/player-status-changed',
-            /** @param {PlayerStatusChanged} playerStatusChanged */
-            function (playerStatusChanged) {
-                $scope.game.players[playerStatusChanged.playerId].status = playerStatusChanged.status;
+        StompService.subscribe($scope, '/game/' + $routeParams.id + '/player-changed',
+            /** @param {Player} player*/
+            function (player) {
+                $scope.game.players[player.user.id] = player;
             }
         );
     }

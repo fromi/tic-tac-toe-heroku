@@ -12,6 +12,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.github.fromi.boardgametools.event.Event;
+import com.github.fromi.tictactoeheroku.com.github.fromi.boardgame.BoardGameTable;
 import com.github.fromi.tictactoeheroku.security.google.User;
 import com.github.fromi.tictactoeheroku.security.websocket.WebSocketDestinationsMapping;
 
@@ -24,21 +25,21 @@ public class GameService {
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    public OnlineGame createGame(User user) {
-        OnlineGame game = repository.save(new OnlineGame(user));
+    public TicTacToe createGame(User user) {
+        TicTacToe game = repository.save(new TicTacToe(user));
         simpMessagingTemplate.convertAndSend(WebSocketDestinationsMapping.GAMES, game);
         return game;
     }
 
-    public List<OnlineGame> getGames() {
+    public List<TicTacToe> getGames() {
         return repository.findAll();
     }
 
     @Cacheable("games")
-    public OnlineGame playGame(String id) {
-        OnlineGame game = repository.findOne(id);
-        game.observe((Consumer<GameStarted>) gameStarted -> repository.save(game));
-        game.observe((Consumer<Object>) event -> dispatch(id, event));
+    public TicTacToe playGame(String id) {
+        TicTacToe game = repository.findOne(id);
+        game.addObserver((Consumer<BoardGameTable.GameStarted>) gameStarted -> repository.save(game));
+        game.addObserver((Consumer<Object>) event -> dispatch(id, event));
         return game;
     }
 

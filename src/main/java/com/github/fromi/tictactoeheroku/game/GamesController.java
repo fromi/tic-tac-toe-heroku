@@ -26,17 +26,17 @@ public class GamesController {
     private GameService service;
 
     @RequestMapping(method = POST, value = GAMES)
-    public OnlineGame createGame(@AuthenticationPrincipal User user) {
+    public TicTacToe createGame(@AuthenticationPrincipal User user) {
         return service.createGame(user);
     }
 
     @RequestMapping(method = GET, value = GAMES)
-    public List<OnlineGame> getGames() {
+    public List<TicTacToe> getGames() {
         return service.getGames();
     }
 
     @RequestMapping(method = GET, value = GAMES + "/{id:[A-Za-z0-9]*}")
-    public OnlineGame getGame(@PathVariable String id) {
+    public TicTacToe getGame(@PathVariable String id) {
         return service.playGame(id);
     }
 
@@ -47,11 +47,11 @@ public class GamesController {
 
     @MessageMapping("/game/{id}/ready")
     public void playerReady(@DestinationVariable String id, @AuthenticationPrincipal User user) {
-        service.playGame(id).getPlayingUser(user).setReady();
+        service.playGame(id).getPlayer(user).setReady();
     }
 
     @MessageMapping("/game/{id}/mark")
     public void mark(@DestinationVariable String id, @AuthenticationPrincipal User user, @Payload Cell cell) {
-        service.playGame(id).getPlayerControlledBy(user).mark(cell.row, cell.column);
+        service.playGame(id).getPlayer(user).getPlayer().mark(cell.row, cell.column);
     }
 }
