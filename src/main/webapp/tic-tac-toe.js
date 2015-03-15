@@ -13,11 +13,16 @@ angular.module('TicTacToe', ['ngResource', 'ngRoute'])
             redirectTo: '/'
         });
     }])
-    .run(['$rootScope', '$resource', function ($rootScope, $resource) {
+    .filter('escape', function () {
+        return window.encodeURIComponent;
+    })
+    .run(['$rootScope', '$resource', '$location', function ($rootScope, $resource, $location) {
         /**
          * @typedef {Object} User
-         * @property {string} id
-         * @property {string} name
+         * @property {String} id
+         * @property {String} name
          */
         $rootScope.user = $resource('/user').get();
+
+        $rootScope.location = $location;
     }]);

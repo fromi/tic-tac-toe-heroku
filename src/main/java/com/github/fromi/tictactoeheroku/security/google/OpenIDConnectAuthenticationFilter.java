@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 public class OpenIDConnectAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
@@ -25,6 +26,12 @@ public class OpenIDConnectAuthenticationFilter extends AbstractAuthenticationPro
     public OpenIDConnectAuthenticationFilter() {
         super(LOGIN_PATH);
         setAuthenticationManager(authentication -> authentication); // AbstractAuthenticationProcessingFilter requires an authentication manager.
+    }
+
+    @Resource
+    @Override
+    public void setAuthenticationSuccessHandler(AuthenticationSuccessHandler successHandler) {
+        super.setAuthenticationSuccessHandler(successHandler);
     }
 
     @Override

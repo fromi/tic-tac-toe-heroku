@@ -2,5 +2,6 @@ google.oauth2:
   discovery-document-url: https://accounts.google.com/.well-known/openid-configuration
   client-id: 127781062338-n2v3cb0nlgsqjs57ldvdmr5cqdm3hut2.apps.googleusercontent.com
   client-secret: J7XftzyKAdGutgVYtT_oPJ2B
+  redirect-uri: http://localhost:8080/login
 
 spring.data.mongodb.uri: mongodb://localhost/tic-tac-toe

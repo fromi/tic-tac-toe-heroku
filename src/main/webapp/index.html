@@ -13,7 +13,7 @@
 </head>
 <body ng-app="TicTacToe">
     <h1>Welcome {{user.name}}</h1>
-    <a ng-show="user.$resolved && !user.id" ng-href="/login">Login</a>
+    <a ng-show="user.$resolved && !user.id" ng-href="/login?redirect={{location.path()|escape}}">Login</a>
 
     <div ng-view></div>
 
